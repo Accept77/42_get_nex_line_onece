@@ -6,96 +6,77 @@
 /*   By: jinsyang <jinsyang@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/13 16:49:12 by jinsyang          #+#    #+#             */
-/*   Updated: 2023/01/18 17:39:55 by jinsyang         ###   ########.fr       */
+/*   Updated: 2023/01/19 17:32:46 by jinsyang         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(char *str)
+size_t	gnl_strlen(const char *str)
 {
 	size_t	count;
 
 	count = 0;
-	if (!str)
-		return (count);
 	while (str[count])
 		count++;
 	return (count);
 }
 
-char	*ft_strdup_stay(char *s1, int index, int total_size)
+void	ft_strlcpy(char *dst, char *src, int index)
 {
-	char	*result;
-	int		len;
-	int		i;
+	int	i;
 
 	i = 0;
-	len = total_size - index;
-	result = (char *) malloc(sizeof(char) * len + 1);
-	if (!result)
-		return (NULL);
-	while (i < len)
+	while (i < index)
 	{
-		result[i] = s1[index];
+		dst[i] = src[i];
 		i++;
-		index++;
 	}
-	result[i] = '\0';
-	return (result);
 }
 
-char	*ft_strdup(char *s1, int index)
+char	*gnl_cpy(char *buf, int index)
 {
-	char	*result;
-	int		i;
+	int	i;
+	char *result;
 
 	i = 0;
-	result = (char *) malloc(sizeof(char) * index + 1);
+	result = (char *)malloc(sizeof(char) * index);
 	if (!result)
 		return (NULL);
 	while (i < index)
 	{
-		result[i] = s1[i];
+		result[i] = buf[i];
+		i++;
+	}
+	return(result);
+}
+
+char	*gnl_cpy_result(char *buf, int index)
+{
+	int i;
+	char *result;
+
+	i = 0;
+	result = (char *)malloc(sizeof(char) * (index + 1));
+	if (!result)
+		return (NULL);
+	while (i < index)
+	{
+		result[i] = buf[i];
 		i++;
 	}
 	result[i] = '\0';
-	return (result);
+	return(result);
 }
 
-void	ft_str_cpy(char *dst, char *src, size_t dstsize)
+char	*gnl_join(char *stay, char *buf, int index, int index_stay)
 {
-	size_t	i;
-
-	i = 0;
-	if (dstsize > 0)
-	{
-		while (i < dstsize)
-		{
-			dst[i] = src[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-}
-
-char	*ft_strjoin(char *re, char *buf, int index)
-{
-	int		len_s1;
 	char	*result;
 
-	if (!re && !buf)
-		return (NULL);
-	else if (!re)
-		return (((char *)buf));
-	else if (!buf)
-		return (((char *)re));
-	len_s1 = ft_strlen(re);
-	result = (char *)malloc(sizeof(char) * (len_s1 + index + 1));
+	result = (char *)malloc(sizeof(char) * (index_stay + index));
 	if (!result)
 		return (NULL);
-	ft_str_cpy(result, re, len_s1);
-	ft_str_cpy(result + len_s1, buf, index);
-	result[len_s1 + index] = '\0';
+	ft_strlcpy(result, stay, index_stay);
+	ft_strlcpy(result + index_stay, buf, index);
 	return (result);
 }
